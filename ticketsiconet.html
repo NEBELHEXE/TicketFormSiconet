@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+
+    <title>Siconet Ticket Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Siconet Ticket Manager System" />
+    <meta name="author" content="Siconet" />
+    <link rel="stylesheet" href="ticketsiconet.css" />
+
+    <script>
+        // Función para generar un ID único
+        function generarId() {
+            return 'ID-' + Math.random().toString(36).substr(2, 9);  // Genera un ID aleatorio
+        }
+
+        // Asignar un ID automático cuando se cargue la página
+        window.onload = function () {
+            const idElemento = document.getElementById('id');
+            idElemento.value = generarId();  // Asigna el ID generado al campo 'id'
+            idElemento.disabled = true;  // Hace que el campo no sea editable
+        };
+    </script>
+
+
+</head>
+<body>
+    <div class="header">
+        <a href="https://siconet.com.mx/"><img src="https://siconet.com.mx/wp-content/uploads/2016/12/transparente_2-01.png" accesskey="" alt="siconet-logo" /></a>
+    </div>
+    <h1 id="title">Ticket Form</h1>
+    <p id="description">Por favor, llena todos los campos.</p>
+
+
+
+    <form id="survey-form">
+        <label id="empresa-label">Empresa:</label>
+        <input id="empresa" required type="text" placeholder="Siconet..."><br />
+        <label id="fecha-label">Fecha:</label>
+        <input id="fecha" required type="date"><br />
+        <label id="id-label">ID:</label>
+        <input id="id" required type="text" readonly /> <br />
+        <label id="urgencia-label">Nivel de Urgencia:</label><br />
+        <select id="urgencia">
+            <option>Selecciona una opción</option>
+            <option>1. Menor</option>
+            <option>2. Medio</option>
+            <option>3. Alto</option>
+        </select>
+        <hr>
+        <label>Descripción del problema:</label><br />
+        <textarea rows="3" cols="50"></textarea>
+        <hr />
+        <input id="submit" type="submit" value="submit">
+    </form>
+</body>
+</html>
