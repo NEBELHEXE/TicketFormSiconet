@@ -1,120 +1,132 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <title>Siconet Ticket Manager</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Siconet Ticket Manager System" />
-  <meta name="author" content="Siconet" />
+<meta charset="utf-8">
+<title>Siconet Ticket Manager</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="ticketsiconet.css">
 
-  <link rel="stylesheet" href="ticketsiconet.css" />
+<style>
+/* Overlay de envío */
+#overlay {
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background: rgba(0,0,0,0.5);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:2000;
+}
 
-  <style>
-    #overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.5);
-        display: none; /* inicia oculto */
-        justify-content: center;
-        align-items: center;
-        z-index: 2000; /* sobre todo */
-    }
+#overlay-text {
+  background-color:white;
+  padding:1.5rem 2rem;
+  border-radius:0.5rem;
+  font-size:1rem;
+  font-weight:bold;
+  color:#000099;
+  box-shadow:0 0 1rem rgba(0,0,0,0.3);
+  text-align:center;
+}
+</style>
 
-    #overlay-text {
-        background-color: white;
-        padding: 1.5rem 2rem;
-        border-radius: 0.5rem;
-        font-size: 1rem;
-        font-weight: bold;
-        color: #000099;
-        box-shadow: 0 0 1rem rgba(0,0,0,0.3);
-        text-align: center;
-    }
-  </style>
+<script>
+function generarId() {
+  return 'ID-' + Math.random().toString(36).substr(2, 9);
+}
 
-  <script>
-    // Función para generar un ID único
-    function generarId() {
-      return 'ID-' + Math.random().toString(36).substr(2, 9);
-    }
+window.onload = function() {
+  const idElemento = document.getElementById('id');
+  if (idElemento) {
+    idElemento.value = generarId();
+    idElemento.readOnly = true;
+  }
 
-    window.onload = function () {
-      const idElemento = document.getElementById('id');
-      if (idElemento) {
-        idElemento.value = generarId();
-        idElemento.readOnly = true;
-      }
+  const form = document.getElementById("survey-form");
+  const overlay = document.getElementById('overlay');
 
-      const form = document.getElementById("survey-form");
-      const overlay = document.getElementById('overlay');
+  if(form){
+    form.addEventListener("submit", function(event){
+      event.preventDefault();
 
-      if (form) {
-        form.addEventListener("submit", function(event){
-          event.preventDefault(); // evita recargar
+      // Mostrar overlay
+      overlay.style.display = 'flex';
 
-          overlay.style.display = 'flex'; // mostrar overlay
+      // Construir datos a enviar
+      const data = {
+        empresa: document.getElementById('empresa').value,
+        fecha: document.getElementById('fecha').value,
+        id: document.getElementById('id').value,
+        urgencia: document.getElementById('urgencia').value,
+        descripcion: document.querySelector('textarea[name="descripcion"]').value
+      };
 
-          // Simulación de envío de 3 segundos
-          setTimeout(function(){
-            alert("Reporte enviado correctamente ✅");
-
-            form.reset();
-            if (idElemento) idElemento.value = generarId();
-
-            overlay.style.display = 'none'; // ocultar overlay
-          }, 3000);
-        });
-      }
-    };
-  </script>
+      // Enviar a WebApp
+      fetch("https://script.google.com/macros/s/AKfycbxAwQsVPhC-xJgiytGNxdKIyBdiqNMH9T8ji8LvIESwKOw-q4qWsNyj2Fg_hPOVM5nT/exec", {
+        method:"POST",
+        body: new URLSearchParams(data)
+      })
+      .then(response=>response.json())
+      .then(res=>{
+        overlay.style.display = 'none';
+        if(res.status==="ok"){
+          alert(res.message);
+          form.reset();
+          idElemento.value = generarId();
+        } else {
+          alert("Error: "+res.message);
+        }
+      })
+      .catch(err=>{
+        overlay.style.display = 'none';
+        alert("Error al enviar: "+err);
+      });
+    });
+  }
+};
+</script>
 </head>
 
 <body>
-  <div class="header">
-    <a href="https://ticketsiconet.netlify.app/">
-      <img src="https://siconet.com.mx/wp-content/uploads/2016/12/transparente_2-01.png" alt="siconet-logo" />
-    </a>
-  </div>
+<div class="header">
+  <a target="_blank" href="https://ticketsiconet.netlify.app/">
+    <img src="https://siconet.com.mx/wp-content/uploads/2016/12/transparente_2-01.png" alt="siconet-logo">
+  </a>
+</div>
 
-  <h1 id="title">Ticket Form</h1>
-  <p id="description">Por favor, llena todos los campos.</p>
+<h1 id="title">Ticket Form</h1>
+<p id="description">Por favor, llena todos los campos.</p>
 
-  <form id="survey-form" 
-        action="https://docs.google.com/forms/d/e/1FAIpQLSeauWSOeMt7cyNZMzFfVCBGV7tCSnAlAr1XyDwiUIg52MJuWQ/formResponse" 
-        method="POST" 
-        target="hidden_iframe">
+<form id="survey-form">
+  <label>Empresa:</label>
+  <input id="empresa" required type="text"><br/>
 
-    <label>Empresa:</label>
-    <input id="empresa" name="entry.1762862587" required type="text"><br/>
+  <label>Fecha:</label>
+  <input id="fecha" required type="date"><br/>
 
-    <label>Fecha:</label>
-    <input id="fecha" name="entry.633378028" required type="date"><br/>
+  <label>ID:</label>
+  <input id="id" required type="text" readonly><br/>
 
-    <label>ID:</label>
-    <input id="id" name="entry.472985924" required type="text" readonly><br/>
+  <label>Urgencia:</label>
+  <select id="urgencia" required>
+    <option value="">Selecciona una opción</option>
+    <option>1. Menor</option>
+    <option>2. Medio</option>
+    <option>3. Alto</option>
+  </select><br/>
 
-    <label>Urgencia:</label>
-    <select id="urgencia" name="entry.923568759" required>
-      <option value="">Selecciona una opción</option>
-      <option>1. Menor</option>
-      <option>2. Medio</option>
-      <option>3. Alto</option>
-    </select><br/>
+  <label>Descripción:</label>
+  <textarea name="descripcion"></textarea><br/>
 
-    <label>Descripción:</label>
-    <textarea name="entry.95601876"></textarea><br/>
+  <input type="submit" value="Enviar Ticket">
+</form>
 
-    <input type="submit" value="Enviar Ticket">
-  </form>
-
-  <iframe name="hidden_iframe" style="display:none;"></iframe>
-
-  <!-- Overlay -->
-  <div id="overlay">
-    <div id="overlay-text">Enviando ticket, por favor espera...</div>
-  </div>
+<!-- Overlay -->
+<div id="overlay">
+  <div id="overlay-text">Enviando ticket, por favor espera...</div>
+</div>
 </body>
 </html>
