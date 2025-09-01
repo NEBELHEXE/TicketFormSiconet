@@ -5,7 +5,9 @@
   <title>Siconet Ticket Manager</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="ticketsiconet.css" />
+
   <script>
+    // Función para generar un ID único
     function generarId() {
       return 'ID-' + Math.random().toString(36).substr(2, 9);
     }
@@ -14,23 +16,25 @@
       const idElemento = document.getElementById('id');
       if (idElemento) {
         idElemento.value = generarId();
-        idElemento.readOnly = true;
+        idElemento.readOnly = true; // readonly
       }
 
       const form = document.getElementById("survey-form");
       if (form) {
-        form.addEventListener("submit", function (event) {
-          event.preventDefault(); // Evitar recargar
+        form.addEventListener("submit", function(event) {
+          event.preventDefault(); // evitar recargar
 
           // Llamar a Apps Script para enviar PDF
           google.script.run.withSuccessHandler(function(msg){
-            alert(msg); // Confirmación
-            form.reset();
-            idElemento.value = generarId(); // Regenerar ID
+            alert(msg); // muestra "PDF enviado correctamente ✅"
+            form.reset(); // limpiar campos
+            if (idElemento) {
+              idElemento.value = generarId(); // regenerar ID
+            }
           }).enviarTablaPDF();
 
-          // Enviar datos a Google Forms
-          form.submit(); 
+          // Enviar datos al formulario de Google Forms
+          form.submit(); // mantiene envío a Google Forms
         });
       }
     };
@@ -39,8 +43,8 @@
 
 <body>
   <div class="header">
-    <a href="https://ticketsiconet.netlify.app/">
-      <img target="_blank" src="https://th.bing.com/th/id/ODF.phOIinVjOrFg2calqOrstg?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2" />
+    <a href="https://siconet.com.mx/">
+      <img src="https://siconet.com.mx/wp-content/uploads/2016/12/transparente_2-01.png" alt="siconet-logo" />
     </a>
   </div>
 
@@ -48,7 +52,7 @@
   <p id="description">Por favor, llena todos los campos.</p>
 
   <form id="survey-form" 
-        action="https://docs.google.com/forms/d/e/1DHm9LJnJobHRGIhGQyxjLwNFltSujqfpEVJYZSW_88w/formResponse" 
+        action="https://docs.google.com/forms/d/e/1FAIpQLSeauWSOeMt7cyNZMzFfVCBGV7tCSnAlAr1XyDwiUIg52MJuWQ/formResponse" 
         method="POST" 
         target="hidden_iframe">
 
@@ -80,7 +84,3 @@
   <iframe name="hidden_iframe" style="display:none;"></iframe>
 </body>
 </html>
-
-
-
-
