@@ -21,20 +21,6 @@
         idElemento.readOnly = true;
       }
     };
-
-    // Mostrar alerta después de que el formulario se envíe
-    function enviarFormularioConAlerta(form) {
-      // Dejar que el submit ocurra naturalmente
-      setTimeout(() => {
-        alert("Reporte enviado correctamente ✅");
-        form.reset();
-        const idElemento = document.getElementById('id');
-        if (idElemento) {
-          idElemento.value = generarId();
-        }
-      }, 100); // 100ms de retardo para permitir envío
-      return true; // continuar con submit nativo
-    }
   </script>
 </head>
 
@@ -49,13 +35,18 @@
   <p id="description">Por favor, llena todos los campos.</p>
 
   <form id="survey-form" 
-      action="https://docs.google.com/forms/d/e/1FAIpQLSeauWSOeMt7cyNZMzFfVCBGV7tCSnAlAr1XyDwiUIg52MJuWQ/formResponse" 
-      method="POST" 
-      target="hidden_iframe"
-      onsubmit="return enviarFormularioConAlerta(this)">
+        action="https://docs.google.com/forms/d/e/1FAIpQLSeauWSOeMt7cyNZMzFfVCBGV7tCSnAlAr1XyDwiUIg52MJuWQ/formResponse" 
+        method="POST" 
+        target="hidden_iframe"
+        onsubmit="setTimeout(() => {
+            alert('Reporte enviado correctamente ✅');
+            this.reset();
+            const idElemento = document.getElementById('id');
+            if (idElemento) { idElemento.value = generarId(); }
+        }, 100)">
 
     <label>Empresa:</label>
-    <input id="empresa" name="entry.1762862587" required type="text" placeholder="Nombre de Empresa"><br/>
+    <input id="empresa" name="entry.1762862587" required type="text" placeholder="Siconet..."><br/>
 
     <label>Fecha:</label>
     <input id="fecha" name="entry.633378028" required type="date"><br/>
@@ -81,7 +72,3 @@
 
 </body>
 </html>
-
-
-
-
