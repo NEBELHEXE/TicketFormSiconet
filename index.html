@@ -46,35 +46,35 @@
   <p id="description">Por favor, llena todos los campos.</p>
 
   <form id="survey-form" 
-        action="https://docs.google.com/forms/d/e/1FAIpQLSeauWSOeMt7cyNZMzFfVCBGV7tCSnAlAr1XyDwiUIg52MJuWQ/formResponse" 
-        method="POST" 
-        target="hidden_iframe">
+      action="https://docs.google.com/forms/d/e/1FAIpQLSeauWSOeMt7cyNZMzFfVCBGV7tCSnAlAr1XyDwiUIg52MJuWQ/formResponse" 
+      method="POST" 
+      target="hidden_iframe">
 
-    <label id="empresa-label">Empresa:</label>
-    <input id="empresa" name="entry.1762862587" required type="text" placeholder="Siconet..."><br/>
+  <label>Empresa:</label>
+  <input id="empresa" name="entry.1762862587" required type="text"><br/>
 
-    <label id="fecha-label">Fecha:</label>
-    <input id="fecha" name="entry.633378028" required type="date"><br/>
+  <label>Fecha:</label>
+  <input id="fecha" name="entry.633378028" required type="date"><br/>
 
-    <label id="id-label">ID:</label>
-    <input id="id" name="entry.472985924" required type="text" readonly><br/>
+  <label>ID:</label>
+  <input id="id" name="entry.472985924" required type="text" readonly><br/>
 
-    <label id="urgencia-label">Nivel de Urgencia:</label><br/>
-    <select id="urgencia" name="entry.923568759" required>
-      <option value="">Selecciona una opción</option>
-      <option>1. Menor</option>
-      <option>2. Medio</option>
-      <option>3. Alto</option>
-    </select>
-    <hr/>
+  <label>Urgencia:</label>
+  <select id="urgencia" name="entry.923568759" required>
+    <option value="">Selecciona una opción</option>
+    <option>1. Menor</option>
+    <option>2. Medio</option>
+    <option>3. Alto</option>
+  </select><br/>
 
-    <label>Descripción del problema:</label><br/>
-    <textarea name="entry.95601876" rows="3" cols="50"></textarea>
-    <hr/>
+  <label>Descripción:</label>
+  <textarea name="entry.95601876"></textarea><br/>
 
-    <input id="submit" type="submit" value="Enviar Ticket">
-  </form>
+  <input type="submit" value="Enviar Ticket">
+</form>
 
-  <iframe name="hidden_iframe" style="display:none;"></iframe>
+<iframe name="hidden_iframe" style="display:none;"></iframe>
+
 </body>
 </html>
+
