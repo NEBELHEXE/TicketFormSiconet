@@ -8,7 +8,7 @@
     <meta name="author" content="Siconet" />
     <link rel="stylesheet" href="ticketsiconet.css" />
 
-    <script>
+   <script>
     // Función para generar un ID único
     function generarId() {
         return 'ID-' + Math.random().toString(36).substr(2, 9);
@@ -28,13 +28,17 @@
             form.addEventListener("submit", function (event) {
                 event.preventDefault(); // evita recargar la página
                 alert("Reporte enviado correctamente ✅");
+                form.reset(); // limpia todos los campos
 
-                // Si en algún momento quieres enviar el form realmente:
-                // form.submit();
+                // volver a generar ID después de limpiar
+                if (idElemento) {
+                    idElemento.value = generarId();
+                }
             });
         }
     };
 </script>
+
 
 </head>
 <body>
@@ -73,4 +77,5 @@
     <iframe name="hidden_iframe" style="display:none;"></iframe>
 </body>
 </html>
+
 
