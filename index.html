@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="ticketsiconet.css" />
 
   <script>
+    const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxAwQsVPhC-xJgiytGNxdKIyBdiqNMH9T8ji8LvIESwKOw-q4qWsNyj2Fg_hPOVM5nT/exec"; // Reemplaza con la URL de tu WebApp desplegada
+
     // Función para generar un ID único
     function generarId() {
       return 'ID-' + Math.random().toString(36).substr(2, 9);
@@ -20,13 +22,45 @@
         idElemento.value = generarId();
         idElemento.readOnly = true;
       }
+
+      const form = document.getElementById("survey-form");
+      form.addEventListener("submit", async function(event){
+        event.preventDefault(); // evitar recarga
+
+        const data = {
+          empresa: document.getElementById("empresa").value,
+          fecha: document.getElementById("fecha").value,
+          id: document.getElementById("id").value,
+          urgencia: document.getElementById("urgencia").value,
+          descripcion: document.querySelector("textarea").value
+        };
+
+        try {
+          const response = await fetch(WEBAPP_URL, {
+            method: "POST",
+            body: new URLSearchParams(data)
+          });
+
+          const result = await response.json();
+          if(result.status === "ok") {
+            alert(result.message);
+            form.reset();
+            idElemento.value = generarId();
+          } else {
+            alert("Error: " + result.message);
+          }
+        } catch (err) {
+          alert("No se pudo enviar el ticket. Revisa tu conexión o la WebApp.");
+          console.error(err);
+        }
+      });
     };
   </script>
 </head>
 
 <body>
   <div class="header">
-    <a target="_blank" href="https://ticketsiconet.netlify.app/">
+    <a href="https://ticketsiconet.netlify.app/">
       <img src="https://siconet.com.mx/wp-content/uploads/2016/12/transparente_2-01.png" alt="siconet-logo" />
     </a>
   </div>
@@ -34,41 +68,28 @@
   <h1 id="title">Ticket Form</h1>
   <p id="description">Por favor, llena todos los campos.</p>
 
-  <form id="survey-form" 
-        action="https://docs.google.com/forms/d/e/1FAIpQLSeauWSOeMt7cyNZMzFfVCBGV7tCSnAlAr1XyDwiUIg52MJuWQ/formResponse" 
-        method="POST" 
-        target="hidden_iframe"
-        onsubmit="setTimeout(() => {
-            alert('Reporte enviado correctamente ✅');
-            this.reset();
-            const idElemento = document.getElementById('id');
-            if (idElemento) { idElemento.value = generarId(); }
-        }, 100)">
-
+  <form id="survey-form">
     <label>Empresa:</label>
-    <input id="empresa" name="entry.1762862587" required type="text" placeholder="Siconet..."><br/>
+    <input id="empresa" required type="text" placeholder="Siconet..."><br/>
 
     <label>Fecha:</label>
-    <input id="fecha" name="entry.633378028" required type="date"><br/>
+    <input id="fecha" required type="date"><br/>
 
     <label>ID:</label>
-    <input id="id" name="entry.472985924" required type="text" readonly><br/>
+    <input id="id" required type="text" readonly><br/>
 
     <label>Urgencia:</label>
-    <select id="urgencia" name="entry.923568759" required>
+    <select id="urgencia" required>
       <option value="">Selecciona una opción</option>
-      <option value="1">1. Menor</option>
-      <option value="2">2. Medio</option>
-      <option value="3">3. Alto</option>
+      <option>1. Menor</option>
+      <option>2. Medio</option>
+      <option>3. Alto</option>
     </select><br/>
 
     <label>Descripción:</label>
-    <textarea name="entry.95601876"></textarea><br/>
+    <textarea></textarea><br/>
 
     <input type="submit" value="Enviar Ticket">
   </form>
-
-  <iframe name="hidden_iframe" style="display:none;"></iframe>
-
 </body>
 </html>
