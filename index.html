@@ -20,18 +20,21 @@
         idElemento.value = generarId();
         idElemento.readOnly = true;
       }
-
-      const form = document.getElementById("survey-form");
-      if (form) {
-        form.addEventListener("submit", function(event){
-          alert("Reporte enviado correctamente ✅"); // mensaje simple
-          form.reset(); // limpiar formulario
-          if (idElemento) {
-            idElemento.value = generarId(); // regenerar ID
-          }
-        });
-      }
     };
+
+    // Mostrar alerta después de que el formulario se envíe
+    function enviarFormularioConAlerta(form) {
+      // Dejar que el submit ocurra naturalmente
+      setTimeout(() => {
+        alert("Reporte enviado correctamente ✅");
+        form.reset();
+        const idElemento = document.getElementById('id');
+        if (idElemento) {
+          idElemento.value = generarId();
+        }
+      }, 100); // 100ms de retardo para permitir envío
+      return true; // continuar con submit nativo
+    }
   </script>
 </head>
 
@@ -48,33 +51,33 @@
   <form id="survey-form" 
       action="https://docs.google.com/forms/d/e/1FAIpQLSeauWSOeMt7cyNZMzFfVCBGV7tCSnAlAr1XyDwiUIg52MJuWQ/formResponse" 
       method="POST" 
-      target="hidden_iframe">
+      target="hidden_iframe"
+      onsubmit="return enviarFormularioConAlerta(this)">
 
-  <label>Empresa:</label>
-  <input id="empresa" name="entry.1762862587" required type="text"><br/>
+    <label>Empresa:</label>
+    <input id="empresa" name="entry.1762862587" required type="text" placeholder="Nombre de Empresa"><br/>
 
-  <label>Fecha:</label>
-  <input id="fecha" name="entry.633378028" required type="date"><br/>
+    <label>Fecha:</label>
+    <input id="fecha" name="entry.633378028" required type="date"><br/>
 
-  <label>ID:</label>
-  <input id="id" name="entry.472985924" required type="text" readonly><br/>
+    <label>ID:</label>
+    <input id="id" name="entry.472985924" required type="text" readonly><br/>
 
-  <label>Urgencia:</label>
-  <select id="urgencia" name="entry.923568759" required>
-    <option value="">Selecciona una opción</option>
-    <option>1. Menor</option>
-    <option>2. Medio</option>
-    <option>3. Alto</option>
-  </select><br/>
+    <label>Urgencia:</label>
+    <select id="urgencia" name="entry.923568759" required>
+      <option value="">Selecciona una opción</option>
+      <option value="1">1. Menor</option>
+      <option value="2">2. Medio</option>
+      <option value="3">3. Alto</option>
+    </select><br/>
 
-  <label>Descripción:</label>
-  <textarea name="entry.95601876"></textarea><br/>
+    <label>Descripción:</label>
+    <textarea name="entry.95601876"></textarea><br/>
 
-  <input type="submit" value="Enviar Ticket">
-</form>
+    <input type="submit" value="Enviar Ticket">
+  </form>
 
-<iframe name="hidden_iframe" style="display:none;"></iframe>
+  <iframe name="hidden_iframe" style="display:none;"></iframe>
 
 </body>
 </html>
-
