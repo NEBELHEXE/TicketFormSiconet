@@ -9,18 +9,33 @@
     <link rel="stylesheet" href="ticketsiconet.css" />
 
     <script>
-        // Función para generar un ID único
-        function generarId() {
-            return 'ID-' + Math.random().toString(36).substr(2, 9);
+    // Función para generar un ID único
+    function generarId() {
+        return 'ID-' + Math.random().toString(36).substr(2, 9);
+    }
+
+    // Cuando cargue la página
+    window.onload = function () {
+        const idElemento = document.getElementById('id');
+        if (idElemento) {
+            idElemento.value = generarId();
+            idElemento.readOnly = true; // readonly en vez de disabled
         }
 
-        // Asignar un ID automático cuando se cargue la página
-        window.onload = function () {
-            const idElemento = document.getElementById('id');
-            idElemento.value = generarId();
-            idElemento.readOnly = true;  // readonly en vez de disabled
-        };
-    </script>
+        // Seleccionar el formulario
+        const form = document.querySelector("form");
+        if (form) {
+            form.addEventListener("submit", function (event) {
+                event.preventDefault(); // evita recargar la página
+                alert("Reporte enviado correctamente ✅");
+
+                // Si en algún momento quieres enviar el form realmente:
+                // form.submit();
+            });
+        }
+    };
+</script>
+
 </head>
 <body>
     <div class="header">
@@ -58,3 +73,4 @@
     <iframe name="hidden_iframe" style="display:none;"></iframe>
 </body>
 </html>
+
