@@ -16,25 +16,25 @@
       const idElemento = document.getElementById('id');
       if (idElemento) {
         idElemento.value = generarId();
-        idElemento.readOnly = true; // readonly
+        idElemento.readOnly = true;
       }
 
       const form = document.getElementById("survey-form");
       if (form) {
         form.addEventListener("submit", function(event) {
-          event.preventDefault(); // evitar recargar
+          event.preventDefault(); // evita el envío inmediato
 
           // Llamar a Apps Script para enviar PDF
           google.script.run.withSuccessHandler(function(msg){
             alert(msg); // muestra "PDF enviado correctamente ✅"
-            form.reset(); // limpiar campos
+            form.reset(); // limpia campos
             if (idElemento) {
               idElemento.value = generarId(); // regenerar ID
             }
-          }).enviarTablaPDF();
 
-          // Enviar datos al formulario de Google Forms
-          form.submit(); // mantiene envío a Google Forms
+            // Enviar realmente los datos al Google Form después de 500ms
+            setTimeout(() => form.submit(), 500); 
+          }).enviarTablaPDF();
         });
       }
     };
@@ -43,7 +43,7 @@
 
 <body>
   <div class="header">
-    <a target="_blank" href="https://ticketsiconet.netlify.app">
+    <a href="https://siconet.com.mx/">
       <img src="https://siconet.com.mx/wp-content/uploads/2016/12/transparente_2-01.png" alt="siconet-logo" />
     </a>
   </div>
@@ -84,6 +84,3 @@
   <iframe name="hidden_iframe" style="display:none;"></iframe>
 </body>
 </html>
-
-
-
