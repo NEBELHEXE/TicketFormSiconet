@@ -6,10 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Siconet Ticket Manager System" />
   <meta name="author" content="Siconet" />
+
   <link rel="stylesheet" href="ticketsiconet.css" />
 
   <style>
-    /* Overlay de envío */
     #overlay {
         position: fixed;
         top: 0;
@@ -55,10 +55,8 @@
         form.addEventListener("submit", function(event){
           event.preventDefault(); // evita recargar
 
-          // Mostrar overlay
-          overlay.style.display = 'flex';
+          overlay.style.display = 'flex'; // mostrar overlay
 
-          // Aquí puedes hacer fetch a tu WebApp o enviar a Google Forms
           // Simulación de envío de 3 segundos
           setTimeout(function(){
             alert("Reporte enviado correctamente ✅");
@@ -66,8 +64,7 @@
             form.reset();
             if (idElemento) idElemento.value = generarId();
 
-            // Ocultar overlay
-            overlay.style.display = 'none';
+            overlay.style.display = 'none'; // ocultar overlay
           }, 3000);
         });
       }
