@@ -21,19 +21,31 @@
 
       const form = document.getElementById("survey-form");
       if (form) {
-        form.addEventListener("submit", function(event) {
-          event.preventDefault(); // evita el envío inmediato
+        form.addEventListener("submit", function(event){
+          event.preventDefault(); // evita envío tradicional
 
-          // Llamar a Apps Script para enviar PDF
+          const formData = new FormData(form);
+
+          // 1️⃣ Enviar PDF vía Apps Script
           google.script.run.withSuccessHandler(function(msg){
-            alert(msg); // muestra "PDF enviado correctamente ✅"
-            form.reset(); // limpia campos
-            if (idElemento) {
-              idElemento.value = generarId(); // regenerar ID
-            }
+            // alerta de PDF enviado
+            alert(msg); 
 
-            // Enviar realmente los datos al Google Form después de 500ms
-            setTimeout(() => form.submit(), 500); 
+            // 2️⃣ Enviar datos al Google Form
+            fetch(form.action, {
+              method: 'POST',
+              mode: 'no-cors', // necesario para Google Forms
+              body: formData
+            }).then(() => {
+              // limpiar formulario
+              form.reset();
+              if (idElemento) {
+                idElemento.value = generarId(); // regenerar ID
+              }
+            }).catch((err) => {
+              console.error("Error enviando a Google Form:", err);
+            });
+
           }).enviarTablaPDF();
         });
       }
@@ -42,19 +54,18 @@
 </head>
 
 <body>
-  <div class="header">
-    <a href="https://ticketsiconet.netlify.app/">
-      <img src="https://siconet.com.mx/wp-content/uploads/2016/12/transparente_2-01.png" alt="siconet-logo" />
-    </a>
-  </div>
+ <div class="header">
+  <a href="https://ticketsiconet.netlify.app/">
+    <img src="https://siconet.com.mx/wp-content/uploads/2016/12/transparente_2-01.png" alt="siconet-logo" />
+  </a>
+</div>
 
   <h1 id="title">Ticket Form</h1>
   <p id="description">Por favor, llena todos los campos.</p>
 
   <form id="survey-form" 
         action="https://docs.google.com/forms/d/e/1FAIpQLSeauWSOeMt7cyNZMzFfVCBGV7tCSnAlAr1XyDwiUIg52MJuWQ/formResponse" 
-        method="POST" 
-        target="hidden_iframe">
+        method="POST">
 
     <label id="empresa-label">Empresa:</label>
     <input id="empresa" name="entry.1762862587" required type="text" placeholder="Siconet..."><br />
@@ -80,8 +91,5 @@
 
     <input id="submit" type="submit" value="Enviar Ticket">
   </form>
-
-  <iframe name="hidden_iframe" style="display:none;"></iframe>
 </body>
 </html>
-
