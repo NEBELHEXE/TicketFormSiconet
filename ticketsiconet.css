@@ -17,7 +17,7 @@
     :root {
         --bg-body: #0000cc;
         --color-text: #e0e0e0;
-        --bg-header: whitesmoke;
+        --bg-header: rgb(0, 0, 109);
         --bg-form: rgba(160,0,0,0.12);
         --bg-input: #ffffff;
         --color-input: #222;
@@ -218,3 +218,4 @@ hr {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
